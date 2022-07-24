@@ -97,10 +97,10 @@ const Pokedex = () => {
   const goToPokemonDetail = (e) => {
     e.preventDefault();
     axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${inputSearch}/`)
+      .get(`https://pokeapi.co/api/v2/pokemon/${inputSearch.toLowerCase()}/`)
       .then((res) => {
         setPokemons(res.data.results);
-        navigate(`/pokedex/${inputSearch}`);
+        navigate(`/pokedex/${inputSearch.toLowerCase()}`);
       })
       .catch(() => alert("Nombre no valido"));
   };
