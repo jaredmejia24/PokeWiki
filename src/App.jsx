@@ -15,7 +15,7 @@ function App() {
   return (
     <HashRouter>
       <div className="background-img">
-        <img id="bgImage" className="bg-img" src="/src/assets/pokeball.jpg" alt="" />
+        <img id="bgImage" className="bg-img" src="./src/assets/pokeball.jpg" alt="" />
       </div>
       <Routes>
         <Route path="/" element={<UserInput />} />
