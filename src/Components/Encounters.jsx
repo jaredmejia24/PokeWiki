@@ -97,7 +97,6 @@ const Encounters = () => {
       .get(`https://pokeapi.co/api/v2/pokemon/${name}/encounters`)
       .then((res) => setEncounters(res.data));
   }, [name]);
-  console.log(encounters);
 
   const goBack = () => {
     navigate(-1);

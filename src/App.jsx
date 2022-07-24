@@ -7,6 +7,7 @@ import ProtectedRoutes from "./Components/ProtectedRoutes";
 import SettingBtn from "./Components/SettingBtn";
 import Settings from "./Components/Settings";
 import UserInput from "./Components/UserInput";
+import bg from '../src/image/pokeball.jpg';
 
 function App() {
   document.body.style.background = "#1D1B1B";
@@ -15,7 +16,7 @@ function App() {
   return (
     <HashRouter>
       <div className="background-img">
-        <img id="bgImage" className="bg-img" src="./src/assets/pokeball.jpg" alt="" />
+        <img id="bgImage" className="bg-img" src={bg} alt="" />
       </div>
       <Routes>
         <Route path="/" element={<UserInput />} />
