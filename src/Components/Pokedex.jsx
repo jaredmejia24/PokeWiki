@@ -10,7 +10,7 @@ const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
 
 const Pokedex = () => {
   const userName = useSelector((state) => state.user.userName);
-  const itemsPerPage = useSelector(state=>state.itemsPerPage);
+  const itemsPerPage = useSelector((state) => state.itemsPerPage);
   const [pokemonTypes, setPokemonTypes] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [pokemons, setPokemons] = useState([]);
@@ -45,8 +45,9 @@ const Pokedex = () => {
       .get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1154`)
       .then((res) => {
         setPokemons(res.data.results);
-        setIsLoading(false);
-      });
+      })
+      .catch(() => alert("an error has ocurred please try reloading the page"))
+      .finally(() => setIsLoading(false));
 
     axios
       .get(`https://pokeapi.co/api/v2/type/`)
@@ -60,15 +61,17 @@ const Pokedex = () => {
         .get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1154`)
         .then((res) => {
           setPokemons(res.data.results);
-          setIsLoading(false);
-        });
+        })
+        .catch(() => alert("an error has ocurred please try reloading the page"))
+        .finally(() => setIsLoading(false));
     } else {
       axios
         .get(`https://pokeapi.co/api/v2/type/${inputPokemonType}/`)
         .then((res) => {
           setPokemons(res.data.pokemon);
-          setIsLoading(false);
-        });
+        })
+        .catch(() => alert("an error has ocurred please try reloading the page"))
+        .finally(() => setIsLoading(false));
     }
   }, [inputPokemonType]);
 

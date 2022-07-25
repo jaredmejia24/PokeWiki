@@ -99,87 +99,101 @@ const Encounters = () => {
       .get(`https://pokeapi.co/api/v2/pokemon/${name}/encounters`)
       .then((res) => {
         setEncounters(res.data);
-        setIsLoading(false);
-      });
+      })
+      .catch(() => alert("an error has ocurred please try reloading the page"))
+      .finally(() => setIsLoading(false));
   }, [name]);
-
+  console.log(encounters);
   const goBack = () => {
     navigate(-1);
   };
   return (
-    <div className="encounters-page">
-      <i
-        style={{ cursor: "pointer" }}
-        onClick={goBack}
-        className="fa-solid fa-2xl exit-icon fa-arrow-left"
-      ></i>
-      {isLoading ? (
-        <div style={{ height: "50vh" }} className="spinner spinner-center">
-          <ClipLoader size={180} />
+    <>
+      {encounters.length !== 0 ? (
+        <div className="encounters-page">
+          <i
+            style={{ cursor: "pointer" }}
+            onClick={goBack}
+            className="fa-solid fa-2xl exit-icon fa-arrow-left"
+          ></i>
+          {isLoading ? (
+            <div style={{ height: "50vh" }} className="spinner spinner-center">
+              <ClipLoader size={180} />
+            </div>
+          ) : (
+            <div className="encounters-container">
+              <h1 style={{ fontSize: "2.2rem", letterSpacing: "2px" }}>
+                {name.charAt(0).toUpperCase() + name.slice(1)} encounters
+              </h1>
+              <div className="all-encounters">
+                {currentItems.map((encounter) => {
+                  const randomNumber = Math.floor(
+                    Math.random() * colorArray.length
+                  );
+                  return (
+                    <p
+                      style={{ background: colorArray[randomNumber] }}
+                      className="each-encounter"
+                      key={encounter.location_area.url}
+                    >
+                      <b>Region: </b>
+                      {encounter.location_area.name.replace(/\-/g, " ")}
+                    </p>
+                  );
+                })}
+              </div>
+              <ul className="pagination-btn encounter-pagination">
+                {page > 1 && (
+                  <li
+                    onClick={() => {
+                      previousPage();
+                    }}
+                  >
+                    <i className="fa-solid fa-arrow-left"></i>
+                  </li>
+                )}
+                {maxPages.map((number) => {
+                  {
+                    if (
+                      number < maxPageNumberLimit + 1 &&
+                      number > minPageNumberLimit
+                    ) {
+                      return (
+                        <PaginationButtons
+                          page={page}
+                          key={number}
+                          number={number}
+                          changePage={changePage}
+                        />
+                      );
+                    }
+                  }
+                })}
+                {page < maxPages.length && (
+                  <li href="#pokedexStart">
+                    <i
+                      onClick={() => {
+                        nextPage();
+                      }}
+                      className="fa-solid fa-arrow-right"
+                    ></i>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="encounters-container">
-          <h1 style={{ fontSize: "2.2rem", letterSpacing: "2px" }}>
-            {name.charAt(0).toUpperCase() + name.slice(1)} encounters
-          </h1>
-          <div className="all-encounters">
-            {currentItems.map((encounter) => {
-              const randomNumber = Math.floor(
-                Math.random() * colorArray.length
-              );
-              return (
-                <p
-                  style={{ background: colorArray[randomNumber] }}
-                  className="each-encounter"
-                  key={encounter.location_area.url}
-                >
-                  <b>Region: </b>
-                  {encounter.location_area.name.replace(/\-/g, " ")}
-                </p>
-              );
-            })}
-          </div>
-          <ul className="pagination-btn encounter-pagination">
-            {page > 1 && (
-              <li
-                onClick={() => {
-                  previousPage();
-                }}
-              >
-                <i className="fa-solid fa-arrow-left"></i>
-              </li>
-            )}
-            {maxPages.map((number) => {
-              {
-                if (
-                  number < maxPageNumberLimit + 1 &&
-                  number > minPageNumberLimit
-                ) {
-                  return (
-                    <PaginationButtons
-                      page={page}
-                      key={number}
-                      number={number}
-                      changePage={changePage}
-                    />
-                  );
-                }
-              }
-            })}
-            {page < maxPages.length && (
-              <li href="#pokedexStart">
-                <i
-                  onClick={() => {
-                    nextPage();
-                  }}
-                  className="fa-solid fa-arrow-right"
-                ></i>
-              </li>
-            )}
-          </ul>
+        <div className="encounters-page">
+          <i
+            style={{ cursor: "pointer" }}
+            onClick={goBack}
+            className="fa-solid fa-2xl exit-icon fa-arrow-left"
+          ></i>
+          <h3 className="center-tittle">This pokemon has no encounters</h3>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

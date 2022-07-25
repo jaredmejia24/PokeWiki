@@ -14,8 +14,9 @@ const PokemonDetail = () => {
       .get(`https://pokeapi.co/api/v2/pokemon/${id}/`)
       .then((res) => {
         setPokemonInfo(res.data);
-        setIsLoading(false);
-      });
+      })
+      .catch(() => alert("an error has ocurred please try reloading the page"))
+      .finally(() => setIsLoading(false));
   }, [id]);
 
   let bgColor;
@@ -209,7 +210,7 @@ const PokemonDetail = () => {
               onClick={goToEncounters}
               className="pokemon-page-card encounter-card"
             >
-              <i class="fa-solid fa-location-dot"></i>
+              <i className="fa-solid fa-location-dot"></i>
               <p>Encounters</p>
             </div>
             <div className="pokemon-page-card movement-card">
