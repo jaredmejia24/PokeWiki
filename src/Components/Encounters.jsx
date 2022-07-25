@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PaginationButtons from "./PaginationButtons";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Encounters = () => {
   const [encounters, setEncounters] = useState([]);
@@ -12,6 +13,7 @@ const Encounters = () => {
   const [pageNumberLimit, setPageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const maxPages = [];
   for (let i = 1; i <= Math.ceil(encounters.length / encountersByPage); i++) {
@@ -95,7 +97,10 @@ const Encounters = () => {
   useEffect(() => {
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${name}/encounters`)
-      .then((res) => setEncounters(res.data));
+      .then((res) => {
+        setEncounters(res.data);
+        setIsLoading(false);
+      });
   }, [name]);
 
   const goBack = () => {
@@ -108,64 +113,72 @@ const Encounters = () => {
         onClick={goBack}
         className="fa-solid fa-2xl exit-icon fa-arrow-left"
       ></i>
-      <div className="encounters-container">
-        <h1 style={{ fontSize: "2.2rem", letterSpacing: "2px" }}>
-          {name.charAt(0).toUpperCase() + name.slice(1)} encounters
-        </h1>
-        <div className="all-encounters">
-          {currentItems.map((encounter) => {
-            const randomNumber = Math.floor(Math.random() * colorArray.length);
-            return (
-              <p
-                style={{ background: colorArray[randomNumber] }}
-                className="each-encounter"
-                key={encounter.location_area.url}
-              >
-                <b>Region: </b>
-                {encounter.location_area.name.replace(/\-/g, " ")}
-              </p>
-            );
-          })}
+      {isLoading ? (
+        <div style={{ height: "50vh" }} className="spinner spinner-center">
+          <ClipLoader size={180} />
         </div>
-        <ul className="pagination-btn encounter-pagination">
-          {page > 1 && (
-            <li
-              onClick={() => {
-                previousPage();
-              }}
-            >
-              <i className="fa-solid fa-arrow-left"></i>
-            </li>
-          )}
-          {maxPages.map((number) => {
-            {
-              if (
-                number < maxPageNumberLimit + 1 &&
-                number > minPageNumberLimit
-              ) {
-                return (
-                  <PaginationButtons
-                    page={page}
-                    key={number}
-                    number={number}
-                    changePage={changePage}
-                  />
-                );
-              }
-            }
-          })}
-          {page < maxPages.length && (
-            <li href="#pokedexStart">
-              <i
+      ) : (
+        <div className="encounters-container">
+          <h1 style={{ fontSize: "2.2rem", letterSpacing: "2px" }}>
+            {name.charAt(0).toUpperCase() + name.slice(1)} encounters
+          </h1>
+          <div className="all-encounters">
+            {currentItems.map((encounter) => {
+              const randomNumber = Math.floor(
+                Math.random() * colorArray.length
+              );
+              return (
+                <p
+                  style={{ background: colorArray[randomNumber] }}
+                  className="each-encounter"
+                  key={encounter.location_area.url}
+                >
+                  <b>Region: </b>
+                  {encounter.location_area.name.replace(/\-/g, " ")}
+                </p>
+              );
+            })}
+          </div>
+          <ul className="pagination-btn encounter-pagination">
+            {page > 1 && (
+              <li
                 onClick={() => {
-                  nextPage();
+                  previousPage();
                 }}
-                className="fa-solid fa-arrow-right"
-              ></i>
-            </li>
-          )}
-        </ul>
-      </div>
+              >
+                <i className="fa-solid fa-arrow-left"></i>
+              </li>
+            )}
+            {maxPages.map((number) => {
+              {
+                if (
+                  number < maxPageNumberLimit + 1 &&
+                  number > minPageNumberLimit
+                ) {
+                  return (
+                    <PaginationButtons
+                      page={page}
+                      key={number}
+                      number={number}
+                      changePage={changePage}
+                    />
+                  );
+                }
+              }
+            })}
+            {page < maxPages.length && (
+              <li href="#pokedexStart">
+                <i
+                  onClick={() => {
+                    nextPage();
+                  }}
+                  className="fa-solid fa-arrow-right"
+                ></i>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

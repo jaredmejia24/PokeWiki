@@ -167,7 +167,7 @@ const Pokedex = () => {
         </div>
       </form>
       {isLoading ? (
-        <div className="spinner">
+        <div className="spinner spinner-center">
           <ClipLoader color={"white"} size={150} />
         </div>
       ) : (

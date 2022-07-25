@@ -322,6 +322,13 @@ ul {
   justify-content: center;
 }
 
+.spinner-center{
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  align-items: center;
+}
+
 .active-page {
   background-color: var(--color-green) !important;
 }
