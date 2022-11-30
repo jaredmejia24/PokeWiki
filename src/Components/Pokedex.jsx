@@ -60,6 +60,7 @@ const Pokedex = () => {
       axios
         .get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1154`)
         .then((res) => {
+          setPage(1);
           setPokemons(res.data.results);
         })
         .catch(() => alert("an error has ocurred please try reloading the page"))
@@ -68,6 +69,7 @@ const Pokedex = () => {
       axios
         .get(`https://pokeapi.co/api/v2/type/${inputPokemonType}/`)
         .then((res) => {
+          setPage(1);
           setPokemons(res.data.pokemon);
         })
         .catch(() => alert("an error has ocurred please try reloading the page"))
